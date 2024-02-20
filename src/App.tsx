@@ -63,7 +63,7 @@ export default function App() {
           </p>
 
           <form
-            className='w-full px-4 md:px-10 flex justify-center items-center flex-col gap-y-4'
+            className='w-full max-w-[42rem] px-4 md:px-10 flex justify-center items-center flex-col gap-y-4'
             onSubmit={handleSubmit}
           >
             <div className='flex items-center justify-center w-full gap-x-4'>
