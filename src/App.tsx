@@ -1,6 +1,7 @@
-import ReCAPTCHA from 'react-google-recaptcha';
-import { useState } from 'react';
+import ReCAPTCHA, { ReCAPTCHAProps } from 'react-google-recaptcha';
+import { useRef, useState } from 'react';
 import useForm from './useForm';
+import axios from 'axios';
 
 type TStatus = 'success' | 'error' | null;
 
@@ -10,9 +11,11 @@ export default function App() {
   const [sendStatus, setSendStatus] = useState<TStatus>(null);
   const [error, setError] = useState<null | string>(null);
   const { sendEmail } = useForm();
+  const captchaRef = useRef<React.LegacyRef<ReCAPTCHA> | null>(null);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
     setError(null);
     setEmail(email.trim());
     if (email === '') {
@@ -24,13 +27,28 @@ export default function App() {
       return;
     }
 
-    sendEmail(e, (error) => {
-      if (error) {
-        setSendStatus('error');
-      } else {
-        setSendStatus('success');
-      }
-    });
+    if (captchaRef?.current && typeof captchaRef.current !== 'string') {
+      // @ts-ignore
+      const token = captchaRef.current.getValue();
+      // @ts-ignore
+      captchaRef.current.reset();
+
+      axios
+        .post('https://dummy-api-phi.vercel.app/api/reCaptcha', { token })
+        .then((res) => console.log(res))
+        .catch((error) => {
+          console.log(error);
+        });
+      return;
+
+      sendEmail(e, (error) => {
+        if (error) {
+          setSendStatus('error');
+        } else {
+          setSendStatus('success');
+        }
+      });
+    }
   }
 
   return (
@@ -103,6 +121,7 @@ export default function App() {
             ></textarea>
 
             <ReCAPTCHA
+              ref={captchaRef}
               sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
               onChange={(value) => {
                 console.log('Captcha value:', value);
