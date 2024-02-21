@@ -6,14 +6,15 @@ import axios from 'axios';
 type TStatus = 'success' | 'error' | null;
 
 export default function App() {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState('ayoub@gmail.com');
+  const [message, setMessage] = useState('hah');
   const [sendStatus, setSendStatus] = useState<TStatus>(null);
   const [error, setError] = useState<null | string>(null);
   const { sendEmail } = useForm();
-  const captchaRef = useRef(null);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const captchaRef = useRef<null | ReCAPTCHA>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     setError(null);
@@ -28,26 +29,29 @@ export default function App() {
     }
 
     if (captchaRef?.current && typeof captchaRef.current !== 'string') {
-      // @ts-ignore
       const token = captchaRef.current.getValue();
-      // @ts-ignore
+      if (!token) return setError('Please complete the captcha.');
       captchaRef.current.reset();
 
-      axios
+      await axios
         .post('https://dummy-api-phi.vercel.app/api/reCaptcha', { token })
-        .then((res) => console.log(res))
+        .then((res) => {
+          if (res.status === 200) {
+            sendEmail(e, (error) => {
+              if (error) {
+                setSendStatus('error');
+              } else {
+                setSendStatus('success');
+              }
+            });
+          } else {
+            setError('Failed to send email. Please try again.');
+          }
+        })
         .catch((error) => {
           console.log(error);
+          setError('Failed to send email. Please try again.');
         });
-      return;
-
-      sendEmail(e, (error) => {
-        if (error) {
-          setSendStatus('error');
-        } else {
-          setSendStatus('success');
-        }
-      });
     }
   }
 
@@ -81,77 +85,77 @@ export default function App() {
           </p>
 
           <form
-            className='w-full max-w-[42rem] px-4 md:px-10 flex justify-center items-center flex-col gap-y-4'
+            className='w-full flex justify-center items-center flex-col'
             onSubmit={handleSubmit}
           >
-            <div className='flex items-center justify-center w-full gap-x-4'>
-              <label className='w-full input input-bordered flex items-center gap-2'>
-                <svg
-                  className='w-4 h-4 opacity-70'
-                  xmlns='http://www.w3.org/2000/svg'
-                  viewBox='0 0 16 16'
-                  fill='currentColor'
-                >
-                  <path d='M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z' />
-                  <path d='M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z' />
-                </svg>
-                <input
-                  className='grow placeholder:text-base-content'
-                  placeholder='Email'
-                  name='from_email'
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                  value={email}
-                  type='text'
-                />
-              </label>
+            <div className='w-full max-w-[42rem] px-4 md:px-10 flex justify-center items-center flex-col gap-y-4'>
+              <div className='flex items-center justify-center w-full gap-x-4'>
+                <label className='w-full input input-bordered flex items-center gap-2'>
+                  <svg
+                    className='w-4 h-4 opacity-70'
+                    xmlns='http://www.w3.org/2000/svg'
+                    viewBox='0 0 16 16'
+                    fill='currentColor'
+                  >
+                    <path d='M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z' />
+                    <path d='M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z' />
+                  </svg>
+                  <input
+                    className='grow placeholder:text-base-content'
+                    placeholder='Email'
+                    name='from_email'
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
+                    value={email}
+                    type='text'
+                  />
+                </label>
 
-              <button className='btn btn-primary'>Get Access Now</button>
+                <button className='btn btn-primary'>Get Access Now</button>
+              </div>
+
+              <textarea
+                className='w-full textarea textarea-bordered'
+                placeholder={'Write your message here...'}
+                name='message'
+                rows={4}
+                onChange={(e) => {
+                  setMessage(e.target.value);
+                }}
+                value={message}
+              ></textarea>
             </div>
-            <textarea
-              className='w-full textarea textarea-bordered'
-              placeholder={'Write your message here...'}
-              name='message'
-              rows={4}
-              onChange={(e) => {
-                setMessage(e.target.value);
-              }}
-              value={message}
-            ></textarea>
+
+            <div className='my-3'>
+              {error ? (
+                <p className='text-red-500'>{error}</p>
+              ) : (
+                sendStatus === 'error' && (
+                  <p className='text-red-500'>
+                    Something went wrong. Please try again or contact me at{' '}
+                    <a
+                      className='link link-primary link-hover'
+                      href='mailto:ayoub.nachat.27@gmail.com'
+                    >
+                      ayoub.nachat.27@gmail.com
+                    </a>
+                  </p>
+                )
+              )}
+
+              {sendStatus === 'success' && (
+                <p className='text-green-500'>
+                  Thank you for applying, I will responde as soon as possible!
+                </p>
+              )}
+            </div>
 
             <ReCAPTCHA
               ref={captchaRef}
               sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-              onChange={(value) => {
-                console.log('Captcha value:', value);
-              }}
             />
           </form>
-
-          <div className='mt-3'>
-            {error ? (
-              <p className='text-red-500'>{error}</p>
-            ) : (
-              sendStatus === 'error' && (
-                <p className='text-red-500'>
-                  Something went wrong. Please try again or contact me at{' '}
-                  <a
-                    className='link link-primary link-hover'
-                    href='mailto:ayoub.nachat.27@gmail.com'
-                  >
-                    ayoub.nachat.27@gmail.com
-                  </a>
-                </p>
-              )
-            )}
-
-            {sendStatus === 'success' && (
-              <p className='text-green-500'>
-                Thank you for applying, I will responde as soon as possible!
-              </p>
-            )}
-          </div>
         </section>
       </main>
 
