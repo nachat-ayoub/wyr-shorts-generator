@@ -1,4 +1,4 @@
-import ReCAPTCHA, { ReCAPTCHAProps } from 'react-google-recaptcha';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { useRef, useState } from 'react';
 import useForm from './useForm';
 import axios from 'axios';
