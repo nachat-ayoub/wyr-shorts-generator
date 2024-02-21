@@ -6,8 +6,8 @@ import axios from 'axios';
 type TStatus = 'success' | 'error' | null;
 
 export default function App() {
-  const [email, setEmail] = useState('ayoub@gmail.com');
-  const [message, setMessage] = useState('hah');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
   const [sendStatus, setSendStatus] = useState<TStatus>(null);
   const [error, setError] = useState<null | string>(null);
   const { sendEmail } = useForm();
