@@ -11,7 +11,7 @@ export default function App() {
   const [sendStatus, setSendStatus] = useState<TStatus>(null);
   const [error, setError] = useState<null | string>(null);
   const { sendEmail } = useForm();
-  const captchaRef = useRef<React.LegacyRef<ReCAPTCHA> | null>(null);
+  const captchaRef = useRef(null);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
