@@ -12,7 +12,7 @@ export default function App() {
   const [error, setError] = useState<null | string>(null);
   const { sendEmail } = useForm();
 
-  const captchaRef = useRef<null | ReCAPTCHA>(null);
+  // const captchaRef = useRef<null | ReCAPTCHA>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -28,31 +28,39 @@ export default function App() {
       return;
     }
 
-    if (captchaRef?.current && typeof captchaRef.current !== 'string') {
-      const token = captchaRef.current.getValue();
-      if (!token) return setError('Please complete the captcha.');
-      captchaRef.current.reset();
+    sendEmail(e, (error) => {
+      if (error) {
+        setSendStatus('error');
+      } else {
+        setSendStatus('success');
+      }
+    });
 
-      await axios
-        .post('https://dummy-api-phi.vercel.app/api/reCaptcha', { token })
-        .then((res) => {
-          if (res.status === 200) {
-            sendEmail(e, (error) => {
-              if (error) {
-                setSendStatus('error');
-              } else {
-                setSendStatus('success');
-              }
-            });
-          } else {
-            setError('Failed to send email. Please try again.');
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          setError('Failed to send email. Please try again.');
-        });
-    }
+    // if (captchaRef?.current && typeof captchaRef.current !== 'string') {
+    //   const token = captchaRef.current.getValue();
+    //   if (!token) return setError('Please complete the captcha.');
+    //   captchaRef.current.reset();
+
+    //   await axios
+    //     .post('https://dummy-api-phi.vercel.app/api/reCaptcha', { token })
+    //     .then((res) => {
+    //       if (res.status === 200) {
+    //         sendEmail(e, (error) => {
+    //           if (error) {
+    //             setSendStatus('error');
+    //           } else {
+    //             setSendStatus('success');
+    //           }
+    //         });
+    //       } else {
+    //         setError('Failed to send email. Please try again.');
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //       setError('Failed to send email. Please try again.');
+    //     });
+    // }
   }
 
   return (
@@ -151,10 +159,10 @@ export default function App() {
               )}
             </div>
 
-            <ReCAPTCHA
+            {/* <ReCAPTCHA
               ref={captchaRef}
               sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-            />
+            /> */}
           </form>
         </section>
       </main>
