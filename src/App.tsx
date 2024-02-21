@@ -1,7 +1,7 @@
-import ReCAPTCHA from 'react-google-recaptcha';
-import { useRef, useState } from 'react';
+// import ReCAPTCHA from 'react-google-recaptcha';
+import { useState } from 'react';
 import useForm from './useForm';
-import axios from 'axios';
+// import axios from 'axios';
 
 type TStatus = 'success' | 'error' | null;
 
