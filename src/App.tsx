@@ -64,10 +64,10 @@ export default function App() {
   }
 
   return (
-    <div className='container mx-auto px-4'>
+    <div className='container px-4 mx-auto'>
       <Nav />
       <header className='py-4 my-4'>
-        <h1 className='text-lg md:text-3xl font-bold text-center'>
+        <h1 className='text-lg font-bold text-center md:text-3xl'>
           Would You Rather Shorts Generator
         </h1>
       </header>
@@ -83,22 +83,23 @@ export default function App() {
           />
         </section>
 
-        <section className='flex justify-center items-center flex-col rounded-lg'>
-          <h2 className='text-lg md:text-3xl font-bold mb-3'>
-            Unlimited Access: <span className='text-primary'> Only $30 </span>
+        <section className='flex flex-col items-center justify-center rounded-lg'>
+          <h2 className='mb-3 text-lg font-bold text-center md:text-3xl'>
+            Unlimited Access:{' '}
+            <span className='text-primary whitespace-nowrap'>Only $30</span>
           </h2>
-          <p className='text-lg text-center mb-5 px-6'>
+          <p className='px-6 mb-5 text-base text-center md:text-lg'>
             Gain instant access to the source code repository and receive
             automatic updates.
           </p>
 
           <form
-            className='w-full flex justify-center items-center flex-col'
+            className='flex flex-col items-center justify-center w-full'
             onSubmit={handleSubmit}
           >
-            <div className='w-full max-w-[42rem] px-4 md:px-10 flex justify-center items-center flex-col gap-y-4'>
-              <div className='flex items-center justify-center w-full gap-x-4'>
-                <label className='w-full input input-bordered flex items-center gap-2'>
+            <div className='w-full max-w-[42rem] md:px-10 flex justify-center items-center flex-col gap-y-4'>
+              <div className='flex items-center justify-center w-full gap-x-2 md:gap-x-4'>
+                <label className='w-full max-w-[calc(100%-62px)] input input-bordered flex items-center gap-2'>
                   <svg
                     className='w-4 h-4 opacity-70'
                     xmlns='http://www.w3.org/2000/svg'
@@ -120,7 +121,28 @@ export default function App() {
                   />
                 </label>
 
-                <button className='btn btn-primary'>Get Access Now</button>
+                <button className='btn btn-primary'>
+                  <span className='hidden md:inline-block'>Get Access Now</span>
+                  <span className='inline-block md:hidden'>
+                    {/* send icon */}
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      className='icon icon-tabler icon-tabler-send'
+                      width='22'
+                      height='22'
+                      viewBox='0 0 24 24'
+                      strokeWidth='1.5'
+                      stroke='currentColor'
+                      fill='none'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                    >
+                      <path stroke='none' d='M0 0h24v24H0z' fill='none' />
+                      <path d='M10 14l11 -11' />
+                      <path d='M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5' />
+                    </svg>
+                  </span>
+                </button>
               </div>
 
               <textarea
@@ -167,7 +189,7 @@ export default function App() {
         </section>
       </main>
 
-      <div className='divider mb-0'></div>
+      <div className='mb-0 divider'></div>
 
       <footer className='py-4 text-center text-gray-500'>
         &copy; {new Date().getFullYear()}{' '}
@@ -186,22 +208,25 @@ function Nav() {
   const repoLink = 'https://github.com/nachat-ayoub' + window.location.pathname;
 
   return (
-    <nav className='w-full navbar justify-between'>
+    <nav className='justify-between w-full px-0 navbar'>
       <div className='flex justify-center items-center gap-x-2.5'>
         <img
-          className={'w-10 h-10'}
+          className='w-8 h-8 md:w-10 md:h-10'
           src='/wyr-shorts-generator/WYR-Logo.svg'
           alt='WYR Logo'
         />
-        <span className={'text-base font-bold'}>WYR Shorts Generator</span>
+        <span
+          className={
+            'flex flex-col md:flex-row md:gap-x-1 text-sm md:text-base font-bold'
+          }
+        >
+          <span className='inline-block whitespace-nowrap'>WYR Shorts</span>
+          <span>Generator</span>
+        </span>
       </div>
 
-      <div className='flex justify-center items-center gap-x-3'>
-        <a
-          className='btn btn-ghost text-neutral-content'
-          target={'_blank'}
-          href={repoLink}
-        >
+      <div className='flex items-center justify-center gap-x-3'>
+        <a className='px-1 btn btn-ghost' target={'_blank'} href={repoLink}>
           <svg
             xmlns='http://www.w3.org/2000/svg'
             className='icon icon-tabler icon-tabler-brand-github'
@@ -210,63 +235,37 @@ function Nav() {
             viewBox='0 0 24 24'
             strokeWidth='1.5'
             stroke='currentColor'
-            fill='none'
             strokeLinecap='round'
             strokeLinejoin='round'
+            fill='none'
           >
             <path stroke='none' d='M0 0h24v24H0z' fill='none' />
             <path d='M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5' />
           </svg>
         </a>
 
-        <div className='dropdown dropdown-end'>
-          <div tabIndex={0} role='button' className='btn m-1'>
-            Theme
-            <svg
-              width='12px'
-              height='12px'
-              className='h-2 w-2 fill-current opacity-60 inline-block'
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='0 0 2048 2048'
-            >
-              <path d='M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z'></path>
-            </svg>
-          </div>
-          <ul
-            tabIndex={0}
-            className='dropdown-content z-[1] p-2 shadow-2xl bg-base-300 rounded-box w-52'
+        <label className='swap swap-rotate'>
+          {/* this hidden checkbox controls the state */}
+          <input type='checkbox' className='theme-controller' value='light' />
+
+          {/* sun icon */}
+          <svg
+            className='w-6 h-6 fill-current swap-on'
+            xmlns='http://www.w3.org/2000/svg'
+            viewBox='0 0 24 24'
           >
-            <li>
-              <input
-                type='radio'
-                name='theme-dropdown'
-                className='theme-controller btn btn-sm btn-block btn-ghost justify-start'
-                aria-label='Default'
-                value='default'
-              />
-            </li>
+            <path d='M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z' />
+          </svg>
 
-            <li>
-              <input
-                type='radio'
-                name='theme-dropdown'
-                className='theme-controller btn btn-sm btn-block btn-ghost justify-start'
-                aria-label='Light'
-                value='light'
-              />
-            </li>
-
-            <li>
-              <input
-                type='radio'
-                name='theme-dropdown'
-                className='theme-controller btn btn-sm btn-block btn-ghost justify-start'
-                aria-label='Dark'
-                value='dark'
-              />
-            </li>
-          </ul>
-        </div>
+          {/* moon icon */}
+          <svg
+            className='w-6 h-6 fill-current swap-off'
+            xmlns='http://www.w3.org/2000/svg'
+            viewBox='0 0 24 24'
+          >
+            <path d='M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z' />
+          </svg>
+        </label>
       </div>
     </nav>
   );
