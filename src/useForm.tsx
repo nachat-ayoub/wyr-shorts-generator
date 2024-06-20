@@ -8,11 +8,11 @@ function useForm() {
   function sendEmail(e: any, cb: (error: string | null) => void) {
     try {
       emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, e.target, PUBLIC_KEY).then(
-        function (response) {
+        function () {
           // console.log('SUCCESS!', response.status, response.text);
           cb(null);
         },
-        function (err) {
+        function () {
           // console.log('FAILED...', err);
           cb('FAILED...');
         }
