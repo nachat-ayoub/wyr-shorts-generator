@@ -53,6 +53,26 @@ export default function App() {
         </section>
 
         <section className='flex flex-col items-center justify-center rounded-lg'>
+          <h2 className='text-lg font-bold text-center mb-7 md:text-3xl'>
+            Support for both{' '}
+            <strong className='underline text-primary'>RTL</strong> and{' '}
+            <strong className='underline text-primary'>LTR</strong> languages:{' '}
+          </h2>
+          <div className='flex items-center justify-center gap-x-2 md:gap-x-4'>
+            <img
+              className='w-2/5 max-w-md rounded-lg -rotate-[5deg] shadow border-4 border-slate-700/15'
+              src='https://i.imgur.com/tm4Evyl.png'
+              alt='WYR EN Example'
+            />
+            <img
+              className='w-2/5 max-w-md rounded-lg rotate-[5deg] shadow border-4 border-slate-700/15'
+              src='https://i.imgur.com/XgCYAnR.png'
+              alt='WYR AR Example'
+            />
+          </div>
+        </section>
+
+        <section className='flex flex-col items-center justify-center rounded-lg'>
           <h2 className='mb-3 text-lg font-bold text-center md:text-3xl'>
             Unlimited Access:{' '}
             <span className='text-primary whitespace-nowrap'>Only $30</span>
