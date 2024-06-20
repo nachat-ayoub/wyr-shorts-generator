@@ -9,11 +9,11 @@ function useForm() {
     try {
       emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, e.target, PUBLIC_KEY).then(
         function (response) {
-          console.log('SUCCESS!', response.status, response.text);
+          // console.log('SUCCESS!', response.status, response.text);
           cb(null);
         },
         function (err) {
-          console.log('FAILED...', err);
+          // console.log('FAILED...', err);
           cb('FAILED...');
         }
       );

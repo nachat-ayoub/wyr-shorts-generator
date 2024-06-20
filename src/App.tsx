@@ -1,18 +1,15 @@
-// import ReCAPTCHA from 'react-google-recaptcha';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { useState } from 'react';
 import useForm from './useForm';
-// import axios from 'axios';
 
-type TStatus = 'success' | 'error' | null;
+type TStatus = 'success' | 'error' | 'loading' | null;
 
 export default function App() {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [sendStatus, setSendStatus] = useState<TStatus>(null);
   const [error, setError] = useState<null | string>(null);
+  const [sendStatus, setSendStatus] = useState<TStatus>(null);
+  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState('');
   const { sendEmail } = useForm();
-
-  // const captchaRef = useRef<null | ReCAPTCHA>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -28,39 +25,11 @@ export default function App() {
       return;
     }
 
+    setSendStatus('loading');
+
     sendEmail(e, (error) => {
-      if (error) {
-        setSendStatus('error');
-      } else {
-        setSendStatus('success');
-      }
+      setSendStatus(error ? 'error' : 'success');
     });
-
-    // if (captchaRef?.current && typeof captchaRef.current !== 'string') {
-    //   const token = captchaRef.current.getValue();
-    //   if (!token) return setError('Please complete the captcha.');
-    //   captchaRef.current.reset();
-
-    //   await axios
-    //     .post('https://dummy-api-phi.vercel.app/api/reCaptcha', { token })
-    //     .then((res) => {
-    //       if (res.status === 200) {
-    //         sendEmail(e, (error) => {
-    //           if (error) {
-    //             setSendStatus('error');
-    //           } else {
-    //             setSendStatus('success');
-    //           }
-    //         });
-    //       } else {
-    //         setError('Failed to send email. Please try again.');
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //       setError('Failed to send email. Please try again.');
-    //     });
-    // }
   }
 
   return (
@@ -121,7 +90,10 @@ export default function App() {
                   />
                 </label>
 
-                <button className='btn btn-primary'>
+                <button
+                  className='btn btn-primary'
+                  disabled={sendStatus === 'loading'}
+                >
                   <span className='hidden md:inline-block'>Get Access Now</span>
                   <span className='inline-block md:hidden'>
                     {/* send icon */}
@@ -158,7 +130,7 @@ export default function App() {
             </div>
 
             <div className='my-3'>
-              {error ? (
+              {sendStatus === 'error' && error ? (
                 <p className='text-red-500'>{error}</p>
               ) : (
                 sendStatus === 'error' && (
@@ -179,12 +151,18 @@ export default function App() {
                   Thank you for applying, I will responde as soon as possible!
                 </p>
               )}
+              {sendStatus === 'loading' && (
+                <div className='flex flex-col items-center justify-center'>
+                  <span className='loading loading-dots loading-md'></span>
+
+                  <p className='text-amber-500'>
+                    Your purshase is being processed...
+                  </p>
+                </div>
+              )}
             </div>
 
-            {/* <ReCAPTCHA
-              ref={captchaRef}
-              sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-            /> */}
+            <ReCAPTCHA sitekey={'6LcUif0pAAAAAP_LLBqkMQa9b_X6h4u6WcrwJIBa'} />
           </form>
         </section>
       </main>
@@ -226,7 +204,11 @@ function Nav() {
       </div>
 
       <div className='flex items-center justify-center gap-x-3'>
-        <a className='px-1 btn btn-ghost' target={'_blank'} href={repoLink}>
+        <a
+          className='px-1 aspect-square btn btn-ghost'
+          target={'_blank'}
+          href={repoLink}
+        >
           <svg
             xmlns='http://www.w3.org/2000/svg'
             className='icon icon-tabler icon-tabler-brand-github'
@@ -244,7 +226,7 @@ function Nav() {
           </svg>
         </a>
 
-        <label className='swap swap-rotate'>
+        <label className='btn btn-ghost aspect-square swap swap-rotate'>
           {/* this hidden checkbox controls the state */}
           <input type='checkbox' className='theme-controller' value='light' />
 
